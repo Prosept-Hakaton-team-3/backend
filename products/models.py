@@ -69,7 +69,10 @@ class DealerPrice(models.Model):
 
 
 class ProductDealer(models.Model):
-    key = models.ForeignKey(DealerPrice, on_delete=models.CASCADE)
+    key = models.ForeignKey(
+        DealerPrice,
+        related_name='matches',
+        on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     dealer_id = models.ForeignKey(Dealer, on_delete=models.CASCADE)
 
