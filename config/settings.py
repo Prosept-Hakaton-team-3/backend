@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(find_dotenv())
 
-SECRET_KEY = os.getenv('SECRET_KEY', '')
+SECRET_KEY = os.getenv('SECRET_KEY', default='not-secret-key')
 
 DEBUG = True
 
@@ -50,6 +50,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
 }
 
 TEMPLATES = [

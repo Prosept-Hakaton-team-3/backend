@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-from .models import Dealer, Product, ProductDealer, DealerPrice
+from .models import Dealer, DealerPrice, Product, ProductDealer
 
 # TODO: better admin panel
 admin.site.register(Dealer)

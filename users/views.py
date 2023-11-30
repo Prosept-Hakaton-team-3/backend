@@ -17,7 +17,8 @@ class UserViewSet(viewsets.GenericViewSet,
         password = make_password(serializer.validated_data.pop('password'))
         serializer.save(password=password)
 
-    @action(detail=False, methods=('get',), permission_classes=(IsAuthenticated,))
+    @action(detail=False, methods=('get',),
+            permission_classes=(IsAuthenticated,))
     def me(self, request):
         serializer = self.get_serializer(request.user)
         return Response(data=serializer.data, status=200)
