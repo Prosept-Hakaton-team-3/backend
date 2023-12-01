@@ -7,11 +7,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(find_dotenv())
 
-SECRET_KEY = os.getenv('SECRET_KEY', default='not-secret-key')
+SECRET_KEY = os.getenv('D_KEY', default='not-secret-key')
 
-DEBUG = True
+DEBUG = (os.getenv('DEBUG', default='True') == 'True')
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['81.31.246.159']
 
 # Application definition
 INSTALLED_APPS = [
@@ -74,8 +77,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.sqlite3'),
+        'NAME': os.getenv('DB_NAME', default=os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
     }
 }
 
@@ -113,6 +120,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
