@@ -22,3 +22,4 @@ rpds-py==0.13.2
 sqlparse==0.4.4
 typing_extensions==4.8.0
 uritemplate==4.1.1
+gunicorn==21.2.0
