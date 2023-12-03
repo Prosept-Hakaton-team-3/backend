@@ -77,9 +77,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.sqlite3'),
-        'NAME': os.getenv('DB_NAME',
-                          default=os.path.join(BASE_DIR, 'db.sqlite3')),
+        'ENGINE': os.getenv(
+            'DB_ENGINE', default='django.db.backends.sqlite3'
+        ),
+        'NAME': os.getenv(
+            'DB_NAME', default=os.path.join(BASE_DIR, 'db.sqlite3')
+        ),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': os.getenv('DB_HOST'),

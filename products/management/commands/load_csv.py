@@ -3,7 +3,7 @@ import logging
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from products.utils import import_csv_data
+from products.utils import CSVProcessing
 
 logger = logging.getLogger(__name__)
 
@@ -21,11 +21,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             absolute_paths = {
-                filepath.split('/')[-1].split('.')[
-                    0]: settings.BASE_DIR / filepath
+                filepath.split('/')[-1].split('.')[0]:
+                    settings.BASE_DIR / filepath
                 for filepath in FILEPATHS
             }
-            import_csv_data(absolute_paths)
+            CSVProcessing(absolute_paths).import_csv_data()
         except Exception:
             logger.exception(
                 f'Ошибка. Данные не были загружены.',

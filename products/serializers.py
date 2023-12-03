@@ -6,28 +6,29 @@ from products.models import Dealer, DealerPrice, Product, ProductDealer
 class DealerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dealer
-        fields = ('id', 'name',)
+        fields = ('id', 'name')
 
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('name', 'ean_13',)
+        fields = ('id', 'article', 'name', 'ean_13',)
 
 
 class ProductDealerSerializer(serializers.ModelSerializer):
-    product_id = ProductSerializer()
+    dealer = DealerSerializer()
+    product = ProductSerializer()
 
     class Meta:
         model = ProductDealer
-        fields = ('product_id',)
+        fields = ('dealer', 'product',)
 
 
 class DealerPriceSerializer(serializers.ModelSerializer):
-    dealer_id = DealerSerializer()
+    dealer = DealerSerializer()
     matches = ProductDealerSerializer(many=True)
 
     class Meta:
         model = DealerPrice
         fields = ('id', 'product_key', 'product_name',
-                  'date', 'dealer_id', 'matches')
+                  'date', 'dealer', 'matches')
