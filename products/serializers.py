@@ -32,7 +32,7 @@ class ProductDealerWriteSerializer(serializers.ModelSerializer):
 
 
 class DealerPriceSerializer(serializers.ModelSerializer):
-    dealer_id = DealerSerializer()
+    dealer = DealerSerializer()
     matches = ProductDealerReadSerializer(many=True)
 
     class Meta:
