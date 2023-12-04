@@ -12,8 +12,8 @@ class DealerPriceViewSet(viewsets.GenericViewSet,
                          mixins.DestroyModelMixin):
     serializer_class = DealerPriceSerializer
     queryset = (DealerPrice.objects.
-                select_related('dealer_id').
-                prefetch_related('matches__product_id'))
+                select_related('dealer').
+                prefetch_related('matches__product'))
 
 
 class ProductViewSet(viewsets.GenericViewSet,
@@ -29,3 +29,4 @@ class ProductDealerViewSet(viewsets.GenericViewSet,
                            mixins.DestroyModelMixin):
     serializer_class = ProductDealerWriteSerializer
     queryset = ProductDealer.objects.all()
+

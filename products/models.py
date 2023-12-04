@@ -1,9 +1,8 @@
 from django.db import models
 
 
-# TODO: узнать максимальную длину всех полей, мб убрать id, улучшить str
 class Dealer(models.Model):
-    id = models.IntegerField(primary_key=True)  # из-за корявых исходников
+    id = models.IntegerField(primary_key=True)
     name = models.CharField('Название', max_length=100)
 
     class Meta:
@@ -16,20 +15,32 @@ class Dealer(models.Model):
 
 class Product(models.Model):
     article = models.CharField('Артикул', max_length=100)
-    ean_13 = models.CharField('EAN-13', max_length=100)
-    name = models.CharField('Название', max_length=100)
-    cost = models.FloatField('Цена')
+    ean_13 = models.CharField('EAN-13', max_length=13)
+    name = models.CharField('Название', blank=True, null=True, max_length=100)
+    cost = models.FloatField('Цена', null=True)
     min_recommended_price = models.FloatField(
-        'Минимальная рекомендованная цена'
+        'Минимальная рекомендованная цена', null=True,
     )
-    recommended_price = models.FloatField('Рекомендованная цена')
-    category_id = models.FloatField('Id категории')
-    ozon_name = models.CharField('Название Озон', max_length=100)
-    name_1c = models.CharField('Название 1С', max_length=100)
-    wb_name = models.CharField('Название WB', max_length=100)
-    ozon_article = models.CharField('Описание Озон', max_length=100)
-    wb_article = models.CharField('Артикул WB', max_length=100)
-    ym_article = models.CharField('Артикул Я.Маркет', max_length=100)
+    recommended_price = models.FloatField('Рекомендованная цена', null=True)
+    category_id = models.FloatField('Id категории', null=True)
+    ozon_name = models.CharField(
+        'Название Озон', max_length=100, blank=True, null=True
+    )
+    name_1c = models.CharField(
+        'Название 1С', max_length=100, blank=True, null=True
+    )
+    wb_name = models.CharField(
+        'Название WB', max_length=100, blank=True, null=True
+    )
+    ozon_article = models.CharField(
+        'Описание Озон',  max_length=100, blank=True, null=True
+    )
+    wb_article = models.CharField(
+        'Артикул WB', max_length=100, blank=True, null=True
+    )
+    ym_article = models.CharField(
+        'Артикул Я.Маркет', max_length=100, blank=True, null=True
+    )
 
     class Meta:
         verbose_name = 'Товар'
@@ -41,20 +52,18 @@ class Product(models.Model):
 
 class DealerPrice(models.Model):
     id = models.IntegerField(primary_key=True)
-    # TODO: maybe unique
     product_key = models.CharField(
         'Номер позиции',
         max_length=100
     )
-    price = models.IntegerField('Цена', )
-    # TODO: maybe urlfield
-    product_url = models.CharField(
+    price = models.IntegerField('Цена')
+    product_url = models.URLField(
         'Адрес получения данных',
         max_length=100
     )
     product_name = models.CharField('Заголовок', max_length=100)
-    date = models.DateField('Дата получения данных', )
-    dealer_id = models.ForeignKey(
+    date = models.DateField('Дата получения данных')
+    dealer = models.ForeignKey(
         Dealer,
         on_delete=models.CASCADE,
         verbose_name='Дилер'
@@ -71,11 +80,12 @@ class DealerPrice(models.Model):
 class ProductDealer(models.Model):
     key = models.ForeignKey(
         DealerPrice,
-        related_name='matches',
-        on_delete=models.CASCADE)
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    dealer_id = models.ForeignKey(Dealer, on_delete=models.CASCADE)
+        on_delete=models.CASCADE
+    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    dealer = models.ForeignKey(Dealer, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Продукт дилера'
         verbose_name_plural = 'Продукты дилеров'
+        default_related_name = 'matches'
