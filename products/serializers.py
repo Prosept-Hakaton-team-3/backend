@@ -6,7 +6,7 @@ from products.models import Dealer, DealerPrice, Product, ProductDealer
 class DealerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dealer
-        fields = ('id', 'name',)
+        fields = ('id', 'name')
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -14,21 +14,21 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id', 'article', 'name', 'ean_13', 'ozon_name', 'name_1c',
                   'wb_name', 'ozon_article', 'wb_article', 'ym_article',
-                  'cost', 'min_recommended_price', 'recommended_price',)
+                  'cost', 'recommended_price',)
 
 
 class ProductDealerReadSerializer(serializers.ModelSerializer):
-    product_id = ProductSerializer()
+    product = ProductSerializer()
 
     class Meta:
         model = ProductDealer
-        fields = ('id', 'product_id',)
+        fields = ('id', 'product',)
 
 
 class ProductDealerWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductDealer
-        fields = ('id', 'product_id', 'dealer_id', 'key')
+        fields = ('id', 'product', 'dealer', 'key')
 
 
 class DealerPriceSerializer(serializers.ModelSerializer):
@@ -38,4 +38,5 @@ class DealerPriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = DealerPrice
         fields = ('id', 'product_key', 'product_name', 'price',
-                  'product_url', 'date', 'dealer_id', 'matches',)
+                  'product_url', 'date', 'dealer', 'matches',)
+
