@@ -1,8 +1,11 @@
 import csv
 
-from .models import Dealer, Product, DealerPrice, ProductDealer
+from .models import Dealer, DealerPrice, Product, ProductDealer
 
 
+# TODO: type hinting
+# TODO: Log everything, unittest
+# TODO: возможно отказаться от id
 def try_convert(value, try_type):
     try:
         new_value = try_type(value)
