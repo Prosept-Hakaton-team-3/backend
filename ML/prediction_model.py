@@ -18,7 +18,7 @@ class ProseptDescriptionSearcher:
     ):
         try:
             self.model = SentenceTransformer(
-                os.path.join(os.getcwd(), 'model')
+                os.path.join(Path(__file__).parent.parent / 'data/model')
             )
         except:
             self.model = SentenceTransformer('LaBSE')
@@ -105,7 +105,7 @@ class ProseptDescriptionSearcher:
             )
             np.save(Path(
                 __file__
-            ).parent.parent / 'cache_embeddings\\embeddings.npy', embeddings)
+            ).parent.parent / 'cache_embeddings/embeddings.npy', embeddings)
         except:
             pass
 
