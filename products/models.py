@@ -4,7 +4,7 @@ from django.db import models
 # TODO: magic numbers
 class Dealer(models.Model):
     id = models.IntegerField(primary_key=True)
-    name = models.CharField('Название', max_length=100)
+    name = models.CharField('Название', max_length=255)
 
     class Meta:
         verbose_name = 'Дилер'
@@ -15,9 +15,9 @@ class Dealer(models.Model):
 
 
 class Product(models.Model):
-    article = models.CharField('Артикул', max_length=100)
+    article = models.CharField('Артикул', max_length=255)
     ean_13 = models.CharField('EAN-13', max_length=13)
-    name = models.CharField('Название', blank=True, null=True, max_length=100)
+    name = models.CharField('Название', blank=True, null=True, max_length=255)
     cost = models.FloatField('Цена', null=True)
     min_recommended_price = models.FloatField(
         'Минимальная рекомендованная цена', null=True,
@@ -25,22 +25,22 @@ class Product(models.Model):
     recommended_price = models.FloatField('Рекомендованная цена', null=True)
     category_id = models.FloatField('Id категории', null=True)
     ozon_name = models.CharField(
-        'Название Озон', max_length=100, blank=True, null=True
+        'Название Озон', max_length=255, blank=True, null=True
     )
     name_1c = models.CharField(
-        'Название 1С', max_length=100, blank=True, null=True
+        'Название 1С', max_length=255, blank=True, null=True
     )
     wb_name = models.CharField(
-        'Название WB', max_length=100, blank=True, null=True
+        'Название WB', max_length=255, blank=True, null=True
     )
     ozon_article = models.CharField(
-        'Описание Озон', max_length=100, blank=True, null=True
+        'Описание Озон', max_length=255, blank=True, null=True
     )
     wb_article = models.CharField(
-        'Артикул WB', max_length=100, blank=True, null=True
+        'Артикул WB', max_length=255, blank=True, null=True
     )
     ym_article = models.CharField(
-        'Артикул Я.Маркет', max_length=100, blank=True, null=True
+        'Артикул Я.Маркет', max_length=255, blank=True, null=True
     )
 
     class Meta:
@@ -55,14 +55,14 @@ class DealerPrice(models.Model):
     id = models.IntegerField(primary_key=True)
     product_key = models.CharField(
         'Номер позиции',
-        max_length=100
+        max_length=255
     )
     price = models.IntegerField('Цена')
     product_url = models.URLField(
         'Адрес получения данных',
-        max_length=100
+        max_length=255
     )
-    product_name = models.CharField('Заголовок', max_length=100)
+    product_name = models.CharField('Заголовок', max_length=255)
     date = models.DateField('Дата получения данных')
     dealer = models.ForeignKey(
         Dealer,
