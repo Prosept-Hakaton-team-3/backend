@@ -1,3 +1,5 @@
+import logging
+
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins, viewsets
@@ -10,7 +12,10 @@ from .models import DealerPrice, Product, ProductDealer
 from .serializers import (DealerPriceSerializer, ProductDealerWriteSerializer,
                           ProductSerializer)
 
-prediction_model = ProseptDescriptionSearcher()
+try:
+    prediction_model = ProseptDescriptionSearcher()
+except:
+    logging.exception('Ошибка', exc_info=True)
 
 
 class DealerPriceViewSet(viewsets.GenericViewSet,
