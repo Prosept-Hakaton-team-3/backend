@@ -17,8 +17,14 @@ class ProductSerializer(serializers.ModelSerializer):
                   'cost', 'recommended_price',)
 
 
+class ProductShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('id', 'article', 'name', 'ean_13')
+
+
 class ProductDealerReadSerializer(serializers.ModelSerializer):
-    product = ProductSerializer()
+    product = ProductShortSerializer()
 
     class Meta:
         model = ProductDealer
@@ -39,4 +45,3 @@ class DealerPriceSerializer(serializers.ModelSerializer):
         model = DealerPrice
         fields = ('id', 'product_key', 'product_name', 'price',
                   'product_url', 'date', 'dealer', 'matches',)
-

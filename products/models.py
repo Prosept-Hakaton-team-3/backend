@@ -1,6 +1,7 @@
 from django.db import models
 
 
+# TODO: magic numbers
 class Dealer(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField('Название', max_length=255)
@@ -33,7 +34,7 @@ class Product(models.Model):
         'Название WB', max_length=255, blank=True, null=True
     )
     ozon_article = models.CharField(
-        'Описание Озон',  max_length=255, blank=True, null=True
+        'Описание Озон', max_length=255, blank=True, null=True
     )
     wb_article = models.CharField(
         'Артикул WB', max_length=255, blank=True, null=True
@@ -80,7 +81,8 @@ class DealerPrice(models.Model):
 class ProductDealer(models.Model):
     key = models.ForeignKey(
         DealerPrice,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='matches'
     )
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     dealer = models.ForeignKey(Dealer, on_delete=models.CASCADE)
@@ -88,4 +90,8 @@ class ProductDealer(models.Model):
     class Meta:
         verbose_name = 'Продукт дилера'
         verbose_name_plural = 'Продукты дилеров'
-        default_related_name = 'matches'
+        constraints = (
+            models.UniqueConstraint(
+                fields=['key', 'dealer', 'product'],
+                name='unique_dealer_product_key'),
+        )
