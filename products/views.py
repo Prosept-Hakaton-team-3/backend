@@ -1,5 +1,3 @@
-import logging
-
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins, viewsets
@@ -12,10 +10,8 @@ from .models import DealerPrice, Product, ProductDealer
 from .serializers import (DealerPriceSerializer, ProductDealerWriteSerializer,
                           ProductSerializer)
 
-try:
-    prediction_model = ProseptDescriptionSearcher()
-except:
-    logging.exception('Ошибка', exc_info=True)
+
+# prediction_model = ProseptDescriptionSearcher()
 
 
 class DealerPriceViewSet(viewsets.GenericViewSet,
@@ -39,21 +35,23 @@ class DealerPriceViewSet(viewsets.GenericViewSet,
             return Response('Количество должно быть целым числом.',
                             status=HTTP_400_BAD_REQUEST)
         dealer_product = get_object_or_404(DealerPrice, id=pk)
-        recommends = prediction_model.match_product({
-            'target': model_to_dict(
-                dealer_product,
-                fields=['id', 'product_name', 'product_key']
-            )},
-            quantity
-        )
-        recommended_products = [
-            get_object_or_404(Product, id=pk) for pk in recommends
-        ]
-
-        serializer = ProductSerializer(
-            recommended_products, many=True
-        )
-        return Response(serializer.data, status=HTTP_200_OK)
+        # recommends = prediction_model.match_product({
+        #     'target': model_to_dict(
+        #         dealer_product,
+        #         fields=['id', 'product_name', 'product_key']
+        #     )},
+        #     quantity
+        # )
+        # recommended_products = [
+        #     get_object_or_404(Product, id=pk) for pk in recommends
+        # ]
+        #
+        # serializer = ProductSerializer(
+        #     recommended_products, many=True
+        # )
+        # return Response(serializer.data, status=HTTP_200_OK)
+        return Response('Пока не готово, будет list[dict[]]',
+                        status=HTTP_200_OK)
 
 
 class ProductViewSet(viewsets.GenericViewSet,
