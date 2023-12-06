@@ -18,10 +18,11 @@ class ProseptDescriptionSearcher:
     ):
         try:
             self.model = SentenceTransformer(
-                os.path.join(Path(__file__).parent.parent / 'data/model')
+                os.path.join(Path(__file__).parent.parent / 'data/model'),
+                device='cpu'
             )
         except:
-            self.model = SentenceTransformer('LaBSE')
+            self.model = SentenceTransformer('LaBSE', device='cpu')
 
         self.number_of_matching = number_of_matching
         self.cache_embeddings_update = cache_embeddings_update
