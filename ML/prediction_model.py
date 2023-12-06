@@ -21,7 +21,7 @@ class ProseptDescriptionSearcher:
                 os.path.join(Path(__file__).parent.parent / 'data/model')
             )
         except:
-            self.model = SentenceTransformer('LaBSE')
+            self.model = SentenceTransformer('multi-qa-MiniLM-L6-cos-v1')
 
         self.number_of_matching = number_of_matching
         self.cache_embeddings_update = cache_embeddings_update
