@@ -63,7 +63,6 @@ db.sqlite3-journal
 static/
 
 # ML stuff:
-cache_embeddings/
 
 # Flask stuff:
 instance/
