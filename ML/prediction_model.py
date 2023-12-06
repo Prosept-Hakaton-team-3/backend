@@ -53,7 +53,7 @@ class ProseptDescriptionSearcher:
     def generate_embeddings(self):
         try:
             pre_loaded_embeddings = np.load(
-                Path(__file__).parent.parent / 'cached/embeddings.npy',
+                Path(__file__).parent.parent / 'cache_embeddings/embeddings.npy',
                 allow_pickle=True
             )
             pre_loaded_embeddings = (

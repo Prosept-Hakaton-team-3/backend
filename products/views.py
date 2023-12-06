@@ -11,7 +11,7 @@ from .serializers import (DealerPriceSerializer, ProductDealerWriteSerializer,
                           ProductSerializer)
 
 
-# prediction_model = ProseptDescriptionSearcher()
+prediction_model = ProseptDescriptionSearcher()
 
 
 class DealerPriceViewSet(viewsets.GenericViewSet,
@@ -35,23 +35,20 @@ class DealerPriceViewSet(viewsets.GenericViewSet,
             return Response('Количество должно быть целым числом.',
                             status=HTTP_400_BAD_REQUEST)
         dealer_product = get_object_or_404(DealerPrice, id=pk)
-        # recommends = prediction_model.match_product({
-        #     'target': model_to_dict(
-        #         dealer_product,
-        #         fields=['id', 'product_name', 'product_key']
-        #     )},
-        #     quantity
-        # )
-        # recommended_products = [
-        #     get_object_or_404(Product, id=pk) for pk in recommends
-        # ]
-        #
-        # serializer = ProductSerializer(
-        #     recommended_products, many=True
-        # )
-        # return Response(serializer.data, status=HTTP_200_OK)
-        return Response('Пока не готово, будет list[dict[]]',
-                        status=HTTP_200_OK)
+        recommends = prediction_model.match_product({
+            'target': model_to_dict(
+                dealer_product,
+                fields=['id', 'product_name', 'product_key']
+            )},
+            quantity
+        )
+        recommended_products = [
+            get_object_or_404(Product, id=pk) for pk in recommends
+        ]
+        serializer = ProductSerializer(
+            recommended_products, many=True
+        )
+        return Response(serializer.data, status=HTTP_200_OK)
 
 
 class ProductViewSet(viewsets.GenericViewSet,
