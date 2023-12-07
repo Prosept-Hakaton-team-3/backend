@@ -40,8 +40,9 @@ class ProductDealerWriteSerializer(serializers.ModelSerializer):
 class DealerPriceSerializer(serializers.ModelSerializer):
     dealer = DealerSerializer()
     matches = ProductDealerReadSerializer(many=True)
+    status = serializers.BooleanField(default=0)
 
     class Meta:
         model = DealerPrice
         fields = ('id', 'product_key', 'product_name', 'price',
-                  'product_url', 'date', 'dealer', 'matches',)
+                  'product_url', 'date', 'dealer', 'status', 'matches',)

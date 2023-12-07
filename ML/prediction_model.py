@@ -21,7 +21,7 @@ class ProseptDescriptionSearcher:
                 os.path.join(Path(__file__).parent.parent / 'data/model')
             )
         except:
-            self.model = SentenceTransformer('multi-qa-MiniLM-L6-cos-v1')
+            self.model = SentenceTransformer('LaBSE')
 
         self.number_of_matching = number_of_matching
         self.cache_embeddings_update = cache_embeddings_update
@@ -53,7 +53,9 @@ class ProseptDescriptionSearcher:
     def generate_embeddings(self):
         try:
             pre_loaded_embeddings = np.load(
-                Path(__file__).parent.parent / 'cache_embeddings/embeddings.npy',
+                Path(
+                    __file__
+                ).parent.parent / 'cache_embeddings/embeddings.npy',
                 allow_pickle=True
             )
             pre_loaded_embeddings = (
@@ -144,8 +146,10 @@ class ProseptDescriptionSearcher:
     def clean_description(text):
 
         extra_words = (
-            r'(?:готовый\sсостав|для|концентрат|просепт|prosept|средство|невымываемый|гелеобразный|канистра|'
-            r'чистящее|спрей|универсальный|универсальная|универсальное|пэт|жидкое|моющее|гель|чистки|'
+            r'(?:готовый\sсостав|для|концентрат|просепт|prosept|средство|'
+            r'невымываемый|гелеобразный|канистра|'
+            r'чистящее|спрей|универсальный|универсальная|универсальное|'
+            r'пэт|жидкое|моющее|гель|чистки|'
             r'концентрированное|professional|готовое|superrubber)'
         )
         # Приведение текста к нижнему регистру
@@ -169,10 +173,16 @@ class ProseptDescriptionSearcher:
         text = re.sub(r'\b\d+-\d+[а-яА-Яa-zA-Z]*\b', ' ', text)
 
         # Преобразование объемов из литров в миллилитры и веса из кг в граммы
-        text = re.sub(r'(\d+[,.]\d+)\s*л', lambda
-            x: f"{int(float(x.group(1).replace(',', '.')) * 1000)} мл", text)
-        text = re.sub(r'(\d+[,.]\d+)\s*кг', lambda
-            x: f"{int(float(x.group(1).replace(',', '.')) * 1000)} г", text)
+        text = re.sub(
+            r'(\d+[,.]\d+)\s*л',
+            lambda x: f"{int(float(x.group(1).replace(',', '.')) * 1000)} мл",
+            text
+        )
+        text = re.sub(
+            r'(\d+[,.]\d+)\s*кг',
+            lambda x: f"{int(float(x.group(1).replace(',', '.')) * 1000)} г",
+            text
+        )
 
         # Замена "/" и "." меджду слов на пробелы
         text = re.sub(r'[/\.]', ' ', text)
