@@ -11,7 +11,6 @@ FILEPATHS = (
     'data/marketing_dealer.csv',
     'data/marketing_dealerprice.csv',
     'data/marketing_product.csv',
-    'data/marketing_productdealerkey.csv'
 )
 
 
