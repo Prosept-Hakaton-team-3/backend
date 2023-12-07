@@ -82,7 +82,8 @@ class DealerPriceViewSet(viewsets.GenericViewSet,
 
 
 class ProductViewSet(viewsets.GenericViewSet,
-                     mixins.ListModelMixin):
+                     mixins.ListModelMixin,
+                     mixins.RetrieveModelMixin):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     search_fields = ('name',)
