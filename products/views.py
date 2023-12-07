@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 from ML.prediction_model import ProseptDescriptionSearcher
-
 from .filters import DealerPriceFilter
 from .models import DealerPrice, Product, ProductDealer
 from .serializers import (DealerPriceSerializer, ProductDealerWriteSerializer,
