@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from products.models import Dealer, DealerPrice, Product, ProductDealer
 
@@ -35,6 +36,14 @@ class ProductDealerWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductDealer
         fields = ('id', 'product', 'dealer', 'key')
+
+    def validate(self, attrs):
+        if ProductDealer.objects.filter(dealer=attrs.get('dealer'),
+                                        product=attrs.get('product'),
+                                        key=attrs.get('key')
+                                        ).exists():
+            raise ValidationError('Эти продукты уже сопоставлены')
+        return attrs
 
 
 class DealerPriceSerializer(serializers.ModelSerializer):
