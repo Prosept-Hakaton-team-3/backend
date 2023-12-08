@@ -7,6 +7,8 @@
 
 **Ссылка на [документацию](http://81.31.246.159/api/swagger/)**
 
+**Ссылка на [архив с кодом](https://drive.google.com/file/d/1jVWxZXHm4dgB4bhWLUZds0PtUOTZjFuj/view?usp=sharing)**
+
 ### Инструкция по развертыванию
 
 #### Развертывание в контейнере
