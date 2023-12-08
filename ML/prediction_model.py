@@ -13,6 +13,7 @@ class ProseptDescriptionSearcher:
 
     def __init__(
             self,
+            connection,
             number_of_matching: Optional[int] = 5,
             cache_embeddings_update: Optional[bool] = False,
     ):
@@ -21,22 +22,27 @@ class ProseptDescriptionSearcher:
                 os.path.join(Path(__file__).parent.parent / 'data/model')
             )
         except:
-            self.model = SentenceTransformer('distiluse-base-multilingual-cased-v2')
+            self.model = SentenceTransformer(
+                'distiluse-base-multilingual-cased-v1'
+            )
 
         self.number_of_matching = number_of_matching
         self.cache_embeddings_update = cache_embeddings_update
+        self.connection = connection
 
         self.initialization_matching()
         self.generate_embeddings()
 
     def initialization_matching(self):
-        self.product = pd.read_csv(
-            filepath_or_buffer=Path(
-                __file__
-            ).parent.parent / 'data/marketing_product.csv',
-            sep=';',
-            index_col='id'
-        )
+        with self.connection.cursor() as cursor:
+            cursor.execute('SELECT id, name FROM products_product')
+            column_names = [
+                description[0] for description in cursor.description
+            ]
+            rows = cursor.fetchall()
+            self.product = pd.DataFrame(
+                data=rows, index=[row[0] for row in rows], columns=column_names
+            )
         self.clean_product()
 
     def clean_product(self):

@@ -1,20 +1,24 @@
+from django.db import connection
 from django.db.models import Exists, OuterRef
 from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_spectacular.utils import OpenApiParameter, extend_schema
+from drf_spectacular.utils import (OpenApiParameter, OpenApiResponse,
+                                   extend_schema, inline_serializer)
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.serializers import IntegerField
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 from ML.prediction_model import ProseptDescriptionSearcher
+
 from .filters import DealerPriceFilter
 from .models import DealerPrice, Product, ProductDealer
 from .serializers import (DealerPriceSerializer, ProductDealerWriteSerializer,
                           ProductSerializer)
 
-prediction_model = ProseptDescriptionSearcher()
+prediction_model = ProseptDescriptionSearcher(connection=connection)
 
 
 class DealerPriceViewSet(viewsets.GenericViewSet,
@@ -35,6 +39,18 @@ class DealerPriceViewSet(viewsets.GenericViewSet,
     filter_backends = (DjangoFilterBackend,)
     filterset_class = DealerPriceFilter
 
+    @extend_schema(
+        responses={
+            200: inline_serializer(
+                name='StatiscticsResponse',
+                fields={
+                    'total': IntegerField(),
+                    'marked': IntegerField(),
+                    'unmarked': IntegerField(),
+                }
+            ),
+        }
+    )
     @action(detail=False,
             methods=('get',))
     def stats(self, request):
@@ -53,7 +69,10 @@ class DealerPriceViewSet(viewsets.GenericViewSet,
                 name='quantity', description='Number of recommendations',
                 type=int, default=5
             ),
-        ]
+        ],
+        responses={
+            200: OpenApiResponse(response=ProductSerializer)
+        },
     )
     @action(detail=True,
             methods=('get',))
