@@ -1,3 +1,5 @@
+import sys
+
 from django.db import connection
 from django.db.models import Exists, OuterRef
 from django.forms.models import model_to_dict
@@ -18,7 +20,8 @@ from .models import DealerPrice, Product, ProductDealer
 from .serializers import (DealerPriceSerializer, ProductDealerWriteSerializer,
                           ProductSerializer)
 
-prediction_model = ProseptDescriptionSearcher(connection=connection)
+if 'manage.py' not in sys.argv:
+    prediction_model = ProseptDescriptionSearcher(connection=connection)
 
 
 class DealerPriceViewSet(viewsets.GenericViewSet,
@@ -111,4 +114,4 @@ class ProductViewSet(viewsets.GenericViewSet,
 class ProductDealerViewSet(viewsets.GenericViewSet,
                            mixins.CreateModelMixin):
     serializer_class = ProductDealerWriteSerializer
-    queryset = ProductDealer.objects.select_related('product', 'key', 'dealer')
+    queryset = ProductDealer.objects.all()

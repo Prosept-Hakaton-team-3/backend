@@ -8,27 +8,7 @@
 **Ссылка на [документацию](http://81.31.246.159/api/swagger/)**
 
 ### Инструкция по развертыванию
-Создайте файл `.env`, в котором перечислите все переменные окружения, пример находится в файле `.env.example`
-#### Локальное развертывание
-- Клонируйте репозиторий
-```shell
-git clone https://github.com/Prosept-Hakaton-team-3/backend.git
-cd backend
-```
-- Создайте и активируйте виртуальное окружение, установите зависимости
-```shell
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-- Запустите миграции и загрузите данные в базу, затем запустите сервер
-```shell
-python manage.py migrate
-python manage.py load_csv
-python manage.py runserver
-```
-Теперь можно перейти по адресу http://127.0.0.1:8000
-***
+
 #### Развертывание в контейнере
 
 - Установите докер и клонируйте репозиторий
@@ -42,15 +22,14 @@ cd backend
 ```
 - Выполните команды для сборки Docker-образа и запуска контейнера
 ```shell
-sudo docker image build -t prosept/backend .
+sudo docker image build -f Dockerfile_dev -t prosept/backend .
 ```
 ```shell
-sudo docker run -d prosept/backend
-sudo docker exec <container> python manage.py migrate
-sudo docker exec <container> python manage.py load_csv
+sudo docker run -p 8000:8080 prosept/backend
 ```
 
 #### Проект готов к использованию!
+http://127.0.0.1:8000/api/v1/
 ***
 ### Над проектом работали:
 **[Антон Земцов](https://github.com/antonata-c)** 
